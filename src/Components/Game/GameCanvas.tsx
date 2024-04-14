@@ -30,16 +30,20 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
     private _gameHero!: MainHero;
 
     constructor(config: T) {
+
         super(config);
+
         this._config = config;
         this._pixiDisplay = new PIXI.Application({
             width: config.width,
             height: config.height,
             backgroundColor: config.background.color
         });
+
     }
 
     public componentDidMount(): void {
+
         const config = this._config;
         this._loadView();
         this._loadInitialGameComponents(config.componenets);
@@ -80,33 +84,21 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
 
     }
 
-    public _clickHandler(event: React.MouseEvent<HTMLElement>, ref: GameCanvas<T>) {
+    public _clickHandler(event: React.MouseEvent<HTMLElement>) {
 
         const rect = this._parentRef.current?.children[0].getBoundingClientRect();
-        // TODO: need to export this logic to Animated Element
+
         if (rect && rect.left < event.clientX && rect.right > event.clientX && rect.bottom > event.clientY && rect.top < event.clientY) {
 
-            let x = event.clientX - rect.left;
-            let y = event.clientY;
+            this._gameHero.setTarget([event.clientX, event.clientY], rect);
 
-            if (event.clientX < (rect.left + this._gameHero.width / 2)) {
-                x = (rect.left + this._gameHero.width / 2) - rect.left;
-            } else if (event.clientX > (rect.right - this._gameHero.width / 2)) {
-                x = (rect.right - this._gameHero.width / 2) - rect.left;
-            }
-
-            if (event.clientY > (rect.bottom - this._gameHero.width / 2)) {
-                y = (rect.bottom - this._gameHero.width / 2);
-            } else if (event.clientY < (rect.top + this._gameHero.width / 2)) {
-                y = (rect.top + this._gameHero.width / 2)
-            }
-
-            this._gameHero.setTarget([x, y]);
         }
 
     }
 
     public render(): React.ReactNode {
-        return <div ref={this._parentRef} onMouseDown={(e) => { this._clickHandler(e, this) }}></div>
+
+        return <div ref={this._parentRef} onMouseDown={(e) => { this._clickHandler(e) }}></div>
+
     }
 } 
