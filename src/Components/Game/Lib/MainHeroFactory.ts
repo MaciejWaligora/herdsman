@@ -2,6 +2,7 @@ import { MainHero} from "./MainHero";
 import * as PIXI from "pixi.js"
 
 export interface MainHeroFactoryConfig{
+    speed: number;
     textureURL: string;
     initialX: number,
     initialY: number,
@@ -9,6 +10,7 @@ export interface MainHeroFactoryConfig{
 }
 
 export class MainHeroFactory{
+
     async build(config: MainHeroFactoryConfig){
         
         const texture = await PIXI.Assets.load(config.textureURL);

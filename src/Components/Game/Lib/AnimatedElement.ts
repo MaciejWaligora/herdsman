@@ -21,12 +21,11 @@ export class AnimatedElement<T extends AnimatedElementConfig> extends PIXI.Sprit
         this._target = [config.initialX, config.initialY];
     }
 
-    public move(){
+    public move(speed: number){
         
         const target = this._target;
         const currentX = this.x;
         const currentY = this.y;
-        const speed = 2; 
 
         // Calculate the distance to move on each axis
         const dx = target[0] - currentX;

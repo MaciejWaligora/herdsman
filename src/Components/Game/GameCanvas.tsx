@@ -68,7 +68,7 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
             this._gameElements.push(mainHero);
             this._gameHero = mainHero;
             this._pixiDisplay.ticker.add((time) => {
-                mainHero.move();
+                mainHero.move(config.mainHero.speed);
             })
         })
 
@@ -83,7 +83,7 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
     public _clickHandler(event: React.MouseEvent<HTMLElement>, ref: GameCanvas<T>) {
 
         const rect = this._parentRef.current?.children[0].getBoundingClientRect();
-
+        // TODO: need to export this logic to Animated Element
         if (rect && rect.left < event.clientX && rect.right > event.clientX && rect.bottom > event.clientY && rect.top < event.clientY) {
 
             let x = event.clientX - rect.left;
@@ -107,6 +107,6 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
     }
 
     public render(): React.ReactNode {
-        return <div ref={this._parentRef} onClick={(e) => { this._clickHandler(e, this) }}></div>
+        return <div ref={this._parentRef} onMouseDown={(e) => { this._clickHandler(e, this) }}></div>
     }
 } 

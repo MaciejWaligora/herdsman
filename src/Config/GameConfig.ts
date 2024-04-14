@@ -27,6 +27,7 @@ export const config: GameConfig = {
                 color: 0xffff00
             },
             mainHero:{
+                speed: 25,
                 scale: 0.5,
                 textureURL:'red-circle.png',
                 initialX: 50,
