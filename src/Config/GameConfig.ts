@@ -32,6 +32,13 @@ export const config: GameConfig = {
                 textureURL:'red-circle.png',
                 initialX: 50,
                 initialY: 50,
+            },
+            animal:{
+                speed: 25,
+                scale: 0.5,
+                textureURL:'red-circle.png',
+                initialX: 50,
+                initialY: 50,
             }
         }
     }

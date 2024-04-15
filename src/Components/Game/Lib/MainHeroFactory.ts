@@ -11,7 +11,7 @@ export interface MainHeroFactoryConfig{
 
 export class MainHeroFactory{
 
-    async build(config: MainHeroFactoryConfig){
+    static async build(config: MainHeroFactoryConfig){
         
         const texture = await PIXI.Assets.load(config.textureURL);
         const heroConfig = {...config, texture: texture}

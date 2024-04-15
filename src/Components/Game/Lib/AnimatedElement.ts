@@ -1,18 +1,18 @@
 import * as PIXI from "pixi.js"
 
 export interface AnimatedElementConfig {
-    initialX: number;
-    initialY: number;
+    initialX?: number;
+    initialY?: number;
     texture: PIXI.Texture;
 }
-interface Bounds {
+export interface Bounds {
     top: number;
     bottom: number;
     left: number;
     right: number;
 }
 
-type Target = [number, number];
+export type Target = [number, number];
 
 
 export class AnimatedElement<T extends AnimatedElementConfig> extends PIXI.Sprite {
@@ -25,10 +25,10 @@ export class AnimatedElement<T extends AnimatedElementConfig> extends PIXI.Sprit
         super(config.texture);
 
         this._config = config;
-        this.x = config.initialX;
-        this.y = config.initialY;
+        this.x = config.initialX || 0;
+        this.y = config.initialY || 0;
         this.anchor.set(0.5);
-        this._target = [config.initialX, config.initialY];
+        this._target = [config.initialX || 0, config.initialY || 0];
 
     }
 

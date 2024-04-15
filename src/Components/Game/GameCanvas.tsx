@@ -4,8 +4,10 @@ import { BackgroundConfig } from "./Lib/Background";
 import { FieldArea, FieldAreaConfig } from "./Lib/FieldArea";
 import { YardArea, YardAreaConfig } from "./Lib/YardArea";
 import { MainHeroFactory, MainHeroFactoryConfig } from "./Lib/MainHeroFactory";
-import { AnimatedElement, AnimatedElementConfig } from "./Lib/AnimatedElement";
 import { MainHero } from "./Lib/MainHero";
+import { AnimalSpawner, AnimalSpawnerConfig } from "./Lib/AnimalSpawner";
+import { AnimalFactoryConfig } from "./Lib/AnimalFactory";
+import { Area, AreaConfig } from "./Lib/Area";
 
 export interface GameCanvasConfig {
     width: number;
@@ -17,7 +19,8 @@ export interface GameCanvasConfig {
 export interface GameComponentsConfig {
     fieldArea: FieldAreaConfig,
     yardArea: YardAreaConfig,
-    mainHero: MainHeroFactoryConfig
+    mainHero: MainHeroFactoryConfig,
+    animal: AnimalFactoryConfig
 }
 
 
@@ -26,8 +29,10 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
     private _parentRef = React.createRef<HTMLDivElement>();
     private _pixiDisplay!: PIXI.Application;
     private _config!: GameCanvasConfig;
-    private _gameElements: AnimatedElement<AnimatedElementConfig>[] = [];
     private _gameHero!: MainHero;
+    private _animalSpawner!: AnimalSpawner<AnimalSpawnerConfig>;
+    private _fieldArea!: Area<AreaConfig>;
+
 
     constructor(config: T) {
 
@@ -53,9 +58,9 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
 
     private _loadInitialGameComponents(gameComponents: GameComponentsConfig): void {
 
-        const fieldArea = new FieldArea(gameComponents.fieldArea);
+        this._fieldArea = new FieldArea(gameComponents.fieldArea);
         const yardArea = new YardArea(gameComponents.yardArea);
-        const components = [fieldArea, yardArea];
+        const components = [this._fieldArea, yardArea];
 
         for (let component of components) {
             this._pixiDisplay.stage.addChild(component as PIXI.DisplayObject);
@@ -67,15 +72,16 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
 
         const config = this._config.componenets;
 
-        new MainHeroFactory().build(config.mainHero).then((mainHero) => {
+        MainHeroFactory.build(config.mainHero).then((mainHero) => {
             this._pixiDisplay.stage.addChild(mainHero as PIXI.DisplayObject);
-            this._gameElements.push(mainHero);
             this._gameHero = mainHero;
             this._pixiDisplay.ticker.add((time) => {
                 mainHero.move(config.mainHero.speed);
             })
+            const spawnerConfig = { animalConfig: config.animal, spawningArea: this._fieldArea, mainHero: this._gameHero, pixiApp: this._pixiDisplay };
+            this._animalSpawner = new AnimalSpawner(spawnerConfig);
+            this._animalSpawner.spawnAmount(10);
         })
-
     }
 
     private _loadView() {
