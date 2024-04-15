@@ -6,6 +6,7 @@ export interface GameConfig {
 
 export const config: GameConfig = {
     canvasConfig: {
+        animalQty: 10,
         width: 800,
         height: 600,
         background: {
@@ -27,16 +28,17 @@ export const config: GameConfig = {
                 color: 0xffff00
             },
             mainHero:{
-                speed: 25,
+                herdLimit: 5,
+                speed: 20,
                 scale: 0.5,
                 textureURL:'red-circle.png',
                 initialX: 50,
                 initialY: 50,
             },
             animal:{
-                speed: 25,
-                scale: 0.5,
-                textureURL:'red-circle.png',
+                speed: 0,
+                scale: 0.008,
+                textureURL:'white-circle.png',
                 initialX: 50,
                 initialY: 50,
             }

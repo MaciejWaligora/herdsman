@@ -8,12 +8,14 @@ import { MainHero } from "./Lib/MainHero";
 import { AnimalSpawner, AnimalSpawnerConfig } from "./Lib/AnimalSpawner";
 import { AnimalFactoryConfig } from "./Lib/AnimalFactory";
 import { Area, AreaConfig } from "./Lib/Area";
+import { Bounds } from "./Lib/AnimatedElement";
 
 export interface GameCanvasConfig {
     width: number;
     height: number;
     background: BackgroundConfig;
     componenets: GameComponentsConfig;
+    animalQty: number;
 }
 
 export interface GameComponentsConfig {
@@ -22,6 +24,7 @@ export interface GameComponentsConfig {
     mainHero: MainHeroFactoryConfig,
     animal: AnimalFactoryConfig
 }
+
 
 
 export class GameCanvas<T extends GameCanvasConfig> extends Component {
@@ -73,14 +76,18 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
         const config = this._config.componenets;
 
         MainHeroFactory.build(config.mainHero).then((mainHero) => {
+
             this._pixiDisplay.stage.addChild(mainHero as PIXI.DisplayObject);
             this._gameHero = mainHero;
             this._pixiDisplay.ticker.add((time) => {
                 mainHero.move(config.mainHero.speed);
             })
-            const spawnerConfig = { animalConfig: config.animal, spawningArea: this._fieldArea, mainHero: this._gameHero, pixiApp: this._pixiDisplay };
+            const rect = this._parentRef.current?.children[0].getBoundingClientRect();
+            const spawnerConfig = { animalConfig: config.animal, spawningArea: this._fieldArea, mainHero: this._gameHero, pixiApp: this._pixiDisplay, walkingBounds: rect as Bounds };
+
             this._animalSpawner = new AnimalSpawner(spawnerConfig);
-            this._animalSpawner.spawnAmount(10);
+            this._animalSpawner.spawnAmount(this._config.animalQty);
+
         })
     }
 

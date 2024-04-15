@@ -17,7 +17,7 @@ export type Target = [number, number];
 
 export class AnimatedElement<T extends AnimatedElementConfig> extends PIXI.Sprite {
 
-    private _config!:T;
+    protected _config!:T;
     private _target!: Target; //[x,y]
 
     constructor(config: T){
