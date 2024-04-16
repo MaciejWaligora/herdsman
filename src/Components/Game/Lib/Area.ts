@@ -19,4 +19,14 @@ export class Area <T extends AreaConfig> extends PIXI.Graphics{
         this.drawRect(config.x, config.y, config.width, config.height);
         this.endFill();
     }
+
+    public bounds(){
+        const bounds = {
+            top: this.y,
+            bottom: this.y + this.height, 
+            left: this.x,
+            right: this.x + this.width
+        }
+        return bounds
+    }
 }

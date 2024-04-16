@@ -1,3 +1,4 @@
+import { Animal, AnimalConfig } from "./Animal";
 import { AnimalFactory, AnimalFactoryConfig } from "./AnimalFactory";
 import { Bounds, Target } from "./AnimatedElement";
 import { Area, AreaConfig } from "./Area";
@@ -10,6 +11,7 @@ export interface AnimalSpawnerConfig{
     mainHero: MainHero;
     pixiApp: PIXI.Application;
     walkingBounds: Bounds;
+    animalsList: Animal[]
 }
 
 export class AnimalSpawner<T extends AnimalSpawnerConfig>{
@@ -29,21 +31,16 @@ export class AnimalSpawner<T extends AnimalSpawnerConfig>{
             right: area.width
         }
         
-        const config = {...this._config.animalConfig, initialX: spawnTarget[0], initialY: spawnTarget[1], gameHero: this._config.mainHero, bounds: this._config.walkingBounds};
+        const config = {...this._config.animalConfig, initialX: spawnTarget[0], initialY: spawnTarget[1], gameHero: this._config.mainHero, bounds: this._config.walkingBounds, speed: this._getRandomSpeed()};
         
 
         AnimalFactory.build(config).then((animal)=>{
             if (animal){
                 animal.setTarget(spawnTarget, spawnBounds);
+                this._config.animalsList.push(animal);
                 this._config.pixiApp.stage.addChild(animal as PIXI.DisplayObject);
-                
                 this._config.pixiApp.ticker.add((time) => {
-                    
-                    const speed = config.speed ? config.speed : this._getRandomSpeed();
-                    animal.move(speed);
-
                     animal.checkThePlayer();
-                    
                 })
             }
         })
@@ -75,7 +72,7 @@ export class AnimalSpawner<T extends AnimalSpawnerConfig>{
 
     private  _getRandomSpeed(){
         const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
-        return random(1, 10);
+        return random(1, 2);
     }
 
 }

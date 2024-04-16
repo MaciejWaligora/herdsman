@@ -11,6 +11,7 @@ export interface AnimalFactoryConfig{
     scale?: number;
     gameHero?: MainHero;
     bounds?: Bounds
+    distToFollow: number;
 }
 
 export class AnimalFactory{

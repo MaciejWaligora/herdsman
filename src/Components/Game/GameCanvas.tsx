@@ -9,6 +9,7 @@ import { AnimalSpawner, AnimalSpawnerConfig } from "./Lib/AnimalSpawner";
 import { AnimalFactoryConfig } from "./Lib/AnimalFactory";
 import { Area, AreaConfig } from "./Lib/Area";
 import { Bounds } from "./Lib/AnimatedElement";
+import { Animal } from "./Lib/Animal";
 
 export interface GameCanvasConfig {
     width: number;
@@ -16,6 +17,7 @@ export interface GameCanvasConfig {
     background: BackgroundConfig;
     componenets: GameComponentsConfig;
     animalQty: number;
+    uiHandler?: () => void;
 }
 
 export interface GameComponentsConfig {
@@ -35,7 +37,8 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
     private _gameHero!: MainHero;
     private _animalSpawner!: AnimalSpawner<AnimalSpawnerConfig>;
     private _fieldArea!: Area<AreaConfig>;
-
+    private _yardArea!: Area<AreaConfig>;
+    public _animals: Animal[] = [];
 
     constructor(config: T) {
 
@@ -54,16 +57,15 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
 
         const config = this._config;
         this._loadView();
-        this._loadInitialGameComponents(config.componenets);
+        this._loadInitialGameComponents(config.componenets)
         this._loadAnimatedElements();
-
     }
 
-    private _loadInitialGameComponents(gameComponents: GameComponentsConfig): void {
+    private _loadInitialGameComponents(gameComponents: GameComponentsConfig) {
 
         this._fieldArea = new FieldArea(gameComponents.fieldArea);
-        const yardArea = new YardArea(gameComponents.yardArea);
-        const components = [this._fieldArea, yardArea];
+        this._yardArea = new YardArea(gameComponents.yardArea);
+        const components = [this._fieldArea, this._yardArea];
 
         for (let component of components) {
             this._pixiDisplay.stage.addChild(component as PIXI.DisplayObject);
@@ -81,14 +83,32 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
             this._gameHero = mainHero;
             this._pixiDisplay.ticker.add((time) => {
                 mainHero.move(config.mainHero.speed);
+                this.checkIfAnimalReachedYard();
             })
             const rect = this._parentRef.current?.children[0].getBoundingClientRect();
-            const spawnerConfig = { animalConfig: config.animal, spawningArea: this._fieldArea, mainHero: this._gameHero, pixiApp: this._pixiDisplay, walkingBounds: rect as Bounds };
+            const spawnerConfig: AnimalSpawnerConfig = { animalConfig: config.animal, spawningArea: this._fieldArea, mainHero: this._gameHero, pixiApp: this._pixiDisplay, walkingBounds: rect as Bounds, animalsList: this._animals };
 
             this._animalSpawner = new AnimalSpawner(spawnerConfig);
             this._animalSpawner.spawnAmount(this._config.animalQty);
 
         })
+    }
+
+    private checkIfAnimalReachedYard() {
+        const bounds = this._yardArea.bounds();
+        const animals = this._animals;
+        for (let animal of animals) {
+            if (animal.x >= bounds.left && animal.x <= bounds.right && animal.y >= bounds.top && animal.y <= bounds.bottom) {
+                this._pixiDisplay.stage.removeChild(animal as PIXI.DisplayObject);
+                const index = this._animals.indexOf(animal);
+                if (index > -1) {
+                    this._animals.splice(index, 1);
+                    if (this._config.uiHandler) {
+                        this._config.uiHandler();
+                    }
+                }
+            }
+        }
     }
 
     private _loadView() {
