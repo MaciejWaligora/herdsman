@@ -6,7 +6,7 @@ export interface GameConfig {
 
 export const config: GameConfig = {
     canvasConfig: {
-        animalQty: 5,
+        animalQty: 10,
         width: 800,
         height: 600,
         background: {
@@ -18,14 +18,14 @@ export const config: GameConfig = {
                 y:0,
                 width: 800,
                 height: 600,
-                color: 0x00ff00
+                color: 0x9BC67B
             },
             yardArea: {
                 x:0,
                 y:0,
                 width: 50,
                 height: 50,
-                color: 0xffff00
+                color: 0xFDDC59
             },
             mainHero:{
                 herdLimit: 1,

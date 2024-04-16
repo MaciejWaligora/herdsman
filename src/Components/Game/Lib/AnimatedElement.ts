@@ -71,26 +71,26 @@ export class AnimatedElement<T extends AnimatedElementConfig> extends PIXI.Sprit
         let x = target[0] - bounds.left;
         let y = target[1] - bounds.top;
 
-            if (target[0] < (bounds.left + width / 2)) {
+            if (target[0] < bounds.left + width / 2) {
 
-                x = (bounds.left + width / 2) - bounds.left;
+                x =  width / 2;
 
-            } else if (target[0]> (bounds.right - width / 2)) {
+            } else if (target[0] > bounds.right - width / 2) {
 
-                x = (bounds.right - width / 2) - bounds.left;
+                x = bounds.right - width / 2 - bounds.left;
 
             }
 
-            if (target[1] > (bounds.bottom - height / 2)) {
+            if (target[1] > bounds.bottom - height / 2) {
 
-                y = (bounds.bottom - height / 2);
+                y = ( y - height / 2);
                 
-            } else if (target[1] < (bounds.top + height / 2)) {
+            } else if (target[1] < bounds.top + height / 2) {
 
-                y = (bounds.top + width / 2)
+                y = ( y + width / 2);
 
             }
 
         this._target = [x, y];
-    }
+    }         
 }
