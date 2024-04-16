@@ -21,11 +21,13 @@ export class Area <T extends AreaConfig> extends PIXI.Graphics{
     }
 
     public bounds(){
+        const config = this._config;
+
         const bounds = {
-            top: this.y,
-            bottom: this.y + this.height, 
-            left: this.x,
-            right: this.x + this.width
+            top: config.y,
+            bottom: config.y + this.height, 
+            left: config.x,
+            right: config.x + this.width
         }
         return bounds
     }

@@ -21,8 +21,8 @@ export const config: GameConfig = {
                 color: 0x9BC67B
             },
             yardArea: {
-                x:0,
-                y:0,
+                x:100,
+                y:100,
                 width: 50,
                 height: 50,
                 color: 0xFDDC59

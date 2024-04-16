@@ -95,14 +95,21 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
     }
 
     private checkIfAnimalReachedYard() {
+
         const bounds = this._yardArea.bounds();
         const animals = this._animals;
+
         for (let animal of animals) {
+
             if (animal.x >= bounds.left && animal.x <= bounds.right && animal.y >= bounds.top && animal.y <= bounds.bottom) {
+
                 this._pixiDisplay.stage.removeChild(animal as PIXI.DisplayObject);
                 const index = this._animals.indexOf(animal);
+
                 if (index > -1) {
+
                     this._animals.splice(index, 1);
+
                     if (this._config.uiHandler) {
                         this._config.uiHandler();
                     }
