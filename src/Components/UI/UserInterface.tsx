@@ -1,4 +1,4 @@
-import Display from "./8_bit_display/display"
+import Display from "./Lib/8_bit_display/display"
 
 export interface UIConfig {
     counterProps: CounterProps;

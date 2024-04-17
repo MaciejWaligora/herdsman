@@ -1,7 +1,7 @@
 import './App.css';
 import { GameCanvas } from '../Components/Game/GameCanvas';
 import { config as gameConfig } from '../Config/GameConfig';
-import { UserInterface } from '../Components/UI/Lib/UserInterface';
+import { UserInterface } from '../Components/UI/UserInterface';
 import { config as UIConfig } from '../Config/UIConfig';
 import { useState } from 'react';
 

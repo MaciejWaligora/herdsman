@@ -1,4 +1,4 @@
-import { UIConfig } from "../Components/UI/Lib/UserInterface";
+import { UIConfig } from "../Components/UI/UserInterface";
 
 export const config: UIConfig = {
     counterProps:{
