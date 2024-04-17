@@ -79,4 +79,20 @@ export class AnimalSpawner<T extends AnimalSpawnerConfig>{
         return random(1, 2);
     }
 
+    private _getRandomDelay(){
+        const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
+        return random(100, 1000);
+    }
+
+    public startRandomSpawn(){
+        const delay = this._getRandomDelay();
+        const target = this._generateRandomSpawnTarget();
+
+        const spawn = () => {
+            this._spawnOne(target);
+        }
+
+        setTimeout(spawn, delay);
+    }
+
 }

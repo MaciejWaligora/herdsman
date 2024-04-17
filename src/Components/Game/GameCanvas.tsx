@@ -17,6 +17,7 @@ export interface GameCanvasConfig {
     background: BackgroundConfig;
     componenets: GameComponentsConfig;
     animalQty: number;
+    randomSpawn: boolean;
     uiHandler?: () => void;
 }
 
@@ -89,8 +90,21 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
             const spawnerConfig: AnimalSpawnerConfig = { animalConfig: config.animal, spawningArea: this._fieldArea, mainHero: this._gameHero, pixiApp: this._pixiDisplay, walkingBounds: rect as Bounds, animalsList: this._animals };
 
             this._animalSpawner = new AnimalSpawner(spawnerConfig);
-            this._animalSpawner.spawnAmount(this._config.animalQty);
 
+            if (!this._config.randomSpawn) {
+
+                this._animalSpawner.spawnAmount(this._config.animalQty);
+
+            } else {
+                const maxQty = this._config.animalQty
+
+                setInterval(() => {
+                    if (this._animals.length < maxQty) {
+                        this._animalSpawner.startRandomSpawn();
+                    }
+                }, 1000);
+
+            }
         })
     }
 

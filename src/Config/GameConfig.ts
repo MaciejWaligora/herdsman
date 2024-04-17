@@ -6,6 +6,7 @@ export interface GameConfig {
 
 export const config: GameConfig = {
     canvasConfig: {
+        randomSpawn: true,
         animalQty: 20,
         width: 800,
         height: 600,
