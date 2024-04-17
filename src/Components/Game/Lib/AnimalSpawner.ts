@@ -40,7 +40,11 @@ export class AnimalSpawner<T extends AnimalSpawnerConfig>{
                 this._config.animalsList.push(animal);
                 this._config.pixiApp.stage.addChild(animal as PIXI.DisplayObject);
                 this._config.pixiApp.ticker.add((time) => {
-                    animal.checkThePlayer();
+                    if(!animal.isDelivered()){
+                        animal.checkThePlayer();
+                    }else{
+                        animal.unfollow();
+                    }
                 })
             }
         })

@@ -109,7 +109,7 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
                 if (index > -1) {
 
                     this._animals.splice(index, 1);
-
+                    animal.deliver();
                     if (this._config.uiHandler) {
                         this._config.uiHandler();
                     }
