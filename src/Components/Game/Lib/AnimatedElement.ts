@@ -70,7 +70,7 @@ export class AnimatedElement<T extends AnimatedElementConfig> extends PIXI.Sprit
 
         let x = target[0] - bounds.left;
         let y = target[1] - bounds.top;
-
+        //Adjust the target to make sure the whole Sprite fits the game arena
             if (target[0] < bounds.left + width / 2) {
 
                 x =  width / 2;

@@ -15,8 +15,6 @@ export class Animal extends AnimatedElement<AnimalConfig>{
 
     public startFollow(){
         const config = this._config;
-        const currentX = this.x;
-        const currentY = this.y;
         const offset = config.bounds?.left || 0;
         const offsetY = config.bounds?.top  || 0;
         const playerPosition =  [(config.gameHero?.x || 0) + offset, (config.gameHero?.y || 0) + offsetY] as Target;
@@ -26,26 +24,35 @@ export class Animal extends AnimatedElement<AnimalConfig>{
 
     public checkThePlayer(){
         const config = this._config;
-        const currentX = this.x;
-        const currentY = this.y;
 
         const playerPosition =  [config.gameHero?.x, config.gameHero?.y] as Target;
         const distanceToFollow = this._config.distToFollow
-
-        if(((playerPosition[0] <= this.x + distanceToFollow && playerPosition[0] >= this.x ) || (playerPosition[0] >= this.x - distanceToFollow && playerPosition[0] <= this.x)) && ((playerPosition[1] <= this.y + distanceToFollow && playerPosition[1] >= this.y) || (playerPosition[1] >= this.y - distanceToFollow && playerPosition[1] <= this.y))){
+        //check if mainHEro is within range to start follow
+        if(((playerPosition[0] <= this.x + distanceToFollow && playerPosition[0] >= this.x ) || 
+            (playerPosition[0] >= this.x - distanceToFollow && playerPosition[0] <= this.x)) && (
+            (playerPosition[1] <= this.y + distanceToFollow && playerPosition[1] >= this.y) || 
+            (playerPosition[1] >= this.y - distanceToFollow && playerPosition[1] <= this.y))){
+            
             if(!this._config.gameHero?.isfull()){
+
                 this.startFollow();
-               if(!this._isFollowing){
-                config.gameHero?.addAnimal();
-               }
+
+                if(!this._isFollowing){
+                    config.gameHero?.addAnimal();
+                }
+
                 this._isFollowing = true;
+
             }else if(this._config.gameHero?.isfull() && this._isFollowing){
+
                 this.startFollow();
+
             }else{
+
                 this._isFollowing = false;
+
             }
         }else{
-            
             this.unfollow();
         }
     }

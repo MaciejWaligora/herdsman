@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import * as PIXI from "pixi.js"
-import { BackgroundConfig } from "./Lib/Background";
 import { FieldArea, FieldAreaConfig } from "./Lib/FieldArea";
 import { YardArea, YardAreaConfig } from "./Lib/YardArea";
 import { MainHeroFactory, MainHeroFactoryConfig } from "./Lib/MainHeroFactory";
@@ -14,7 +13,6 @@ import { Animal } from "./Lib/Animal";
 export interface GameCanvasConfig {
     width: number;
     height: number;
-    background: BackgroundConfig;
     componenets: GameComponentsConfig;
     animalQty: number;
     randomSpawn: boolean;
@@ -48,8 +46,7 @@ export class GameCanvas<T extends GameCanvasConfig> extends Component {
         this._config = config;
         this._pixiDisplay = new PIXI.Application({
             width: config.width,
-            height: config.height,
-            backgroundColor: config.background.color
+            height: config.height
         });
 
     }
